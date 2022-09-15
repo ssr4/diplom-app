@@ -3,15 +3,19 @@ import {
   ActivatedRouteSnapshot,
   CanActivate,
   CanDeactivate,
+  Router,
   RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate, CanDeactivate<unknown> {
+  constructor(private authService: AuthService, private router: Router) {}
+
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
@@ -20,6 +24,12 @@ export class AuthGuard implements CanActivate, CanDeactivate<unknown> {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
+    console.log(this.authService.isLoggedIn());
+
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['login']);
+      return false;
+    }
     return true;
   }
 
@@ -33,6 +43,10 @@ export class AuthGuard implements CanActivate, CanDeactivate<unknown> {
     | UrlTree
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree> {
-    return true;
+    if (confirm('Are you sure')) {
+      localStorage.removeItem('token');
+      return true;
+    }
+    return false;
   }
 }

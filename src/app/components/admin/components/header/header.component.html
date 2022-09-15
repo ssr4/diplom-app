@@ -22,12 +22,14 @@
             >Personal Contacts</a
           >
         </li>
-        <button type="button" class="btn btn-info ms-3">Logout</button>
+        <button type="button" class="btn btn-info ms-3" (click)="logOut()">
+          Logout
+        </button>
       </ul>
     </nav>
   </div>
 </header>
-<!-- <div class="progress">
+<div class="progress" *ngIf="isLoading | async">
   <div
     class="progress-bar progress-bar-striped progress-bar-animated"
     role="progressbar"
@@ -36,4 +38,4 @@
     aria-valuemax="100"
     style="width: 100%"
   ></div>
-</div> -->
+</div>
